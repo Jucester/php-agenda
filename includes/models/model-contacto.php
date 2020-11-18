@@ -12,7 +12,7 @@
             $query->bind_param("sss", $nombre, $ubicacion, $telefono);
             $query->execute();
             if($query->affected_rows == 1) {
-                $res = array(
+                $res = [
                     'respuesta' => 'correcto',
                     'datos' => array(
                         'nombre' => $nombre,
@@ -20,14 +20,16 @@
                         'telefono' => $telefono,
                         'id' => $query->insert_id
                     )
-                );
+                    ];
             }
             $query->close();
             $conn->close();
+          
         } catch(Exception $e) {
             $res = array(
                 'error' => $e->getMessage()
             );
         }
         echo json_encode($res);
+        
     }   

@@ -1,4 +1,8 @@
-<?php  include_once 'includes/layouts/header.php' ?>
+<?php  
+    include_once 'includes/functions/queries.php';
+    include_once 'includes/layouts/header.php'
+
+?>
 
 <div class="contenedor sombra contenedor-form">
     <form class="form-inline" action="#" id="contacto">
@@ -32,56 +36,39 @@
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td> Jucel </td>
-                        <td> The Owl's Nest </td>
-                        <td> +58 412 666 6666 </td>
-                        <td> 
+                  
+                    
+             
+                                
+                <?php $contactos = obtenerContactos(); 
+                
+                if($contactos->num_rows):  ?>  
+             
+                    <?php foreach($contactos as $contacto):  ?>
 
-                            <a href="#" class="btn-editar btn">
-                                <i class="fas fa-pen-square"></i>
-                            </a>
+                        <tr> 
+                            <td> <?= $contacto['nombre'] ?> </td>
+                            <td> <?= $contacto['ubicacion'] ?> </td>
+                            <td> <?= $contacto['telefono'] ?> </td>
+                            <td> 
 
-                            <a href="#" data-id="1" class="btn-borrar btn">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
+                                <a href="editar.php?=<?= $contacto['id']; ?>" class="btn-editar btn">
+                                    <i class="fas fa-pen-square"></i>
+                                </a>
 
-                        </td>
-                    </tr>
+                                <a href="borrar.php?=<?= $contacto['id']; ?>"" class="btn-borrar btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
 
-                    <tr>
-                        <td> Jucel </td>
-                        <td> The Owl's Nest </td>
-                        <td> +58 412 666 6666 </td>
-                        <td> 
+                            </td>
+                        
+                        </tr>
 
-                            <a href="#" class="btn-editar btn">
-                                <i class="fas fa-pen-square"></i>
-                            </a>
+                    <?php endforeach ?>
+            <?php endif ?>
+              
 
-                            <a href="#" data-id="1" class="btn-borrar btn">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td> Jucel </td>
-                        <td> The Owl's Nest </td>
-                        <td> +58 412 666 6666 </td>
-                        <td> 
-
-                            <a href="#" class="btn-editar btn">
-                                <i class="fas fa-pen-square"></i>
-                            </a>
-
-                            <a href="#" data-id="1" class="btn-borrar btn">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-
-                        </td>
-                    </tr>
+          
 
                 </tbody>
 
