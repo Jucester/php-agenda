@@ -52,7 +52,7 @@
                             <td> <?= $contacto['telefono'] ?> </td>
                             <td> 
 
-                                <a href="editar.php?=<?= $contacto['id']; ?>" class="btn-editar btn">
+                                <a href="editar.php?id=<?= $contacto['id']; ?>" class="btn-editar btn">
                                     <i class="fas fa-pen-square"></i>
                                 </a>
 

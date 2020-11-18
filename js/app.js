@@ -1,5 +1,6 @@
 const contactForm = document.querySelector('#contacto'),
-    listadoContactos = document.querySelector('#listado tbody');
+      listadoContactos = document.querySelector('#listado tbody'),
+      buscador = document.querySelector('#buscar');
 
 eventListeners();
 
@@ -29,43 +30,62 @@ function eventListeners() {
             if(accion === 'crear') {
                 // Crear el nuevo contacto con una función AJAX
                 insertarContacto(infoContacto);
-            } else {
-
+            } else if (accion === 'editar') {
+                const id = document.querySelector('#id').value;
+                infoContacto.append('id', id);
+                actualizarContacto(infoContacto);
             }
         }
     })
 
-
-    listadoContactos.addEventListener('click', (e) => {
-        if ( e.target.parentElement.classList.contains('btn-borrar') ){
-            const id = e.target.parentElement.getAttribute('data-id');
-            
-            const res = confirm('¿Estas seguro (a) ?');
-
-            if(res) {
+    if(listadoContactos) {
+        listadoContactos.addEventListener('click', (e) => {
+            if ( e.target.parentElement.classList.contains('btn-borrar') ){
+                const id = e.target.parentElement.getAttribute('data-id');
                 
-                let xhr = new XMLHttpRequest();
-                xhr.open('GET', `includes/models/model-contacto.php?id=${id}&accion=borrar`, true);
-                xhr.onload = function() {
-                    if(this.status === 200) {
-                        const data = JSON.parse(xhr.responseText);
-                        console.log(data);
-
-                        if(data.respuesta == 'correcto') {
-                            console.log(e.target.parentElement.parentElement.parentElement);
-                            e.target.parentElement.parentElement.parentElement.remove();
-
-                            noti('Contacto eliminado', 'exito');
-                        } else {
-                            noti('Hubo un error...', 'error');
+                const res = confirm('¿Estas seguro (a) ?');
+    
+                if(res) {
+                    
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('GET', `includes/models/model-contacto.php?id=${id}&accion=borrar`, true);
+                    xhr.onload = function() {
+                        if(this.status === 200) {
+                            const data = JSON.parse(xhr.responseText);
+                            console.log(data);
+    
+                            if(data.respuesta == 'correcto') {
+                                console.log(e.target.parentElement.parentElement.parentElement);
+                                e.target.parentElement.parentElement.parentElement.remove();
+    
+                                noti('Contacto eliminado', 'exito');
+                            } else {
+                                noti('Hubo un error...', 'error');
+                            }
                         }
                     }
-                }
-                xhr.send();
-            } 
-        }
+                    xhr.send();
+                } 
+            }
+    
+        });
+    }
 
-    });
+    buscador.addEventListener('input', (e) => {
+
+        const exp = new RegExp(e.target.value, "i"),
+              registros = document.querySelectorAll('tbody tr');
+
+            
+              registros.forEach(registro => {
+                registro.style.display = 'none';    
+
+                if(registro.childNodes[1].textContent.replace(/\s/g, " ").search(exp) === 1) {
+                    registro.style.display = "table-row";
+                }
+            });
+
+    })
 
 }
 
@@ -149,3 +169,31 @@ const insertarContacto = (info) => {
     xhr.send(info);
 
 }
+
+const actualizarContacto = (info) => {
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'includes/models/model-contacto.php', true);
+
+    xhr.onload = function() {
+        if(this.status === 200) {
+            const res = JSON.parse(xhr.responseText);
+            console.log(res);
+
+            if(res.respuesta === 'correcto') {
+                noti('Contacto editado', 'exito');
+            } else {
+
+                noti('Hubo un error', 'error');
+            }
+
+            setTimeout(() => {
+                window.location.href = 'index.php';
+            }, 1000);
+        }
+    };
+
+    xhr.send(info);
+
+}
+
