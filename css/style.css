@@ -10,6 +10,10 @@ body {
     font-family: var(--fuentePrimaria);
 }
 
+a {
+    text-decoration: none;
+}
+
 .barra {
     padding: 20px;
     background-color: #B82C00;
@@ -77,7 +81,7 @@ body {
    
 }
 
-.form-inline button {
+.boton {
   padding: 10px 30px;
   font-size: 1rem;
   background-color: dodgerblue;
@@ -88,7 +92,7 @@ body {
   transition: background-color .5s ease;
 }
 
-.form-inline button:hover {
+.boton:hover {
     cursor: pointer;
     background-color: royalblue;
 }
@@ -169,13 +173,15 @@ h2 {
     text-align: center;
 }
 
+.contenedor-button {
+    margin: 30px 10px;
+}
 
 .btn {
     background-color: transparent;
     border: none;
     font-size: 2rem;
     text-decoration: none;
-
 }
 
 .btn-editar {
@@ -188,4 +194,29 @@ h2 {
 
 .btn-volver {
     color: #1553a5;
+}
+
+/* Notifications */
+
+.notification {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 1rem 3rem;
+    opacity: 0;
+    color: #FFF;
+    border-radius: 5px;
+    transition: opacity .5 ease-in;
+}
+
+.visible {
+    opacity: 1;
+}
+
+.error {
+    background-color: #d1360f;
+}
+
+.exito {
+    background-color: #15a528;
 }
