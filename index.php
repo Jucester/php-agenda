@@ -56,9 +56,9 @@
                                     <i class="fas fa-pen-square"></i>
                                 </a>
 
-                                <a href="borrar.php?=<?= $contacto['id']; ?>"" class="btn-borrar btn">
+                                <button data-id="<?= $contacto['id']; ?>"  class="btn-borrar btn">
                                     <i class="fas fa-trash-alt"></i>
-                                </a>
+                                </button>
 
                             </td>
                         

@@ -34,6 +34,39 @@ function eventListeners() {
             }
         }
     })
+
+
+    listadoContactos.addEventListener('click', (e) => {
+        if ( e.target.parentElement.classList.contains('btn-borrar') ){
+            const id = e.target.parentElement.getAttribute('data-id');
+            
+            const res = confirm('¿Estas seguro (a) ?');
+
+            if(res) {
+                
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', `includes/models/model-contacto.php?id=${id}&accion=borrar`, true);
+                xhr.onload = function() {
+                    if(this.status === 200) {
+                        const data = JSON.parse(xhr.responseText);
+                        console.log(data);
+
+                        if(data.respuesta == 'correcto') {
+                            console.log(e.target.parentElement.parentElement.parentElement);
+                            e.target.parentElement.parentElement.parentElement.remove();
+
+                            noti('Contacto eliminado', 'exito');
+                        } else {
+                            noti('Hubo un error...', 'error');
+                        }
+                    }
+                }
+                xhr.send();
+            } 
+        }
+
+    });
+
 }
 
 const noti = (mensaje, tipo) => {
@@ -96,7 +129,7 @@ const insertarContacto = (info) => {
             const enlaceBorrar = document.createElement('a');
             enlaceBorrar.appendChild(iconoBorrar);
             enlaceBorrar.classList.add('btn', 'btn-borrar');
-            enlaceBorrar.href = `borrar.php?id=${res.datos.id}`;
+            enlaceBorrar.setAttribute('data-id', res.datos.id);
 
             contenedorAcciones.appendChild(enlaceBorrar);
 
