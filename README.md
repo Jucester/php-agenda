@@ -1,0 +1,1 @@
+Pequeña agenda de contactos usando PHP, MySQL y Ajax. Realizada como una practica para refrescar conocimientos de Ajax con PHP.
