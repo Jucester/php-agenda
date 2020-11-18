@@ -37,55 +37,30 @@ function eventListeners() {
             }
         }
     })
-
+    
     if(listadoContactos) {
-        listadoContactos.addEventListener('click', (e) => {
-            if ( e.target.parentElement.classList.contains('btn-borrar') ){
-                const id = e.target.parentElement.getAttribute('data-id');
-                
-                const res = confirm('¿Estas seguro (a) ?');
-    
-                if(res) {
-                    
-                    let xhr = new XMLHttpRequest();
-                    xhr.open('GET', `includes/models/model-contacto.php?id=${id}&accion=borrar`, true);
-                    xhr.onload = function() {
-                        if(this.status === 200) {
-                            const data = JSON.parse(xhr.responseText);
-                            console.log(data);
-    
-                            if(data.respuesta == 'correcto') {
-                                console.log(e.target.parentElement.parentElement.parentElement);
-                                e.target.parentElement.parentElement.parentElement.remove();
-    
-                                noti('Contacto eliminado', 'exito');
-                            } else {
-                                noti('Hubo un error...', 'error');
-                            }
-                        }
-                    }
-                    xhr.send();
-                } 
-            }
-    
-        });
+        // Eliminar contacto
+        listadoContactos.addEventListener('click', eliminarContacto);
     }
 
+    // Buscador barra
     buscador.addEventListener('input', (e) => {
 
         const exp = new RegExp(e.target.value, "i"),
               registros = document.querySelectorAll('tbody tr');
 
-            
               registros.forEach(registro => {
                 registro.style.display = 'none';    
-
-                if(registro.childNodes[1].textContent.replace(/\s/g, " ").search(exp) === 1) {
+               
+                if(registro.childNodes[1].textContent.replace(/\s/g, " ").search(exp) != -1) {
                     registro.style.display = "table-row";
                 }
+                numeroContactos();
             });
 
     })
+ 
+    numeroContactos();
 
 }
 
@@ -164,9 +139,43 @@ const insertarContacto = (info) => {
 
             // Mostrar notificacion
             noti('Añadido exitosamente', 'exito');
+            numeroContactos();
         }
     }
     xhr.send(info);
+
+}
+
+function eliminarContacto(e) {
+    console.log('click')
+    if ( e.target.parentElement.classList.contains('btn-borrar') ){
+        const id = e.target.parentElement.getAttribute('data-id');
+        
+        const res = confirm('¿Estas seguro (a) ?');
+
+        if(res) {
+            
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', `includes/models/model-contacto.php?id=${id}&accion=borrar`, true);
+            xhr.onload = function() {
+                if(this.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    console.log(data);
+
+                    if(data.respuesta == 'correcto') {
+                        console.log(e.target.parentElement.parentElement.parentElement);
+                        e.target.parentElement.parentElement.parentElement.remove();
+
+                        noti('Contacto eliminado', 'exito');
+                        numeroContactos();
+                    } else {
+                        noti('Hubo un error...', 'error');
+                    }
+                }
+            }
+            xhr.send();
+        } 
+    }
 
 }
 
@@ -197,3 +206,19 @@ const actualizarContacto = (info) => {
 
 }
 
+function numeroContactos() {
+    
+    const totalContactos = document.querySelectorAll('tbody tr'),
+          contenedorCantidad = document.querySelector('.total-contactos span');
+
+    let total = 0;
+
+    totalContactos.forEach(contacto => {
+        if(contacto.style.display === '' || contacto.style.display === 'table-row') {
+            total++;
+        }
+    });
+    console.log(total);
+
+    contenedorCantidad.textContent = total;
+}

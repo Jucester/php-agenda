@@ -21,7 +21,7 @@
 
         <input type="text" id="buscar" class="buscador sombra" placeholder="Ingresa el nombre del contacto">
 
-        <p class="total-contactos"> <span> 12 </span> </p>
+        <p class="total-contactos"> <span>  </span> contactos </p>
 
         <div class="contenedor-tabla">
             
